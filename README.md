@@ -33,3 +33,41 @@ To get started with Achoo Records, follow these simple steps:
 1. **Clone the Repository:**
 
    git clone https://github.com/kalviumcommunity/S54_Achoo_Records.git
+
+## How Can I Contribute?
+
+### Reporting Bugs
+
+If you encounter a bug, please use the [GitHub Issue Tracker](https://github.com/kalviumcommunity/S54_Achoo_Records.git) to report it. When reporting bugs, please include:
+
+- A clear and descriptive title.
+- A detailed description of the issue.
+- Steps to reproduce the bug.
+- Screenshots or code snippets, if applicable.
+
+### Submitting Feature Requests
+
+Have an idea for a new feature? Feel free to open an issue on the [GitHub Issue Tracker](https://github.com/kalviumcommunity/S54_Achoo_Records.git) with the following information:
+
+- A clear and descriptive title.
+- A detailed description of the proposed feature.
+
+### Pull Requests
+
+To contribute code changes, improvements, or new features:
+
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature-name`.
+3. Make your changes and commit them: `git commit -m 'Added some feature'`.
+4. Push to the branch: `git push origin feature-name`.
+5. Submit a pull request.
+
+### Style Guide
+
+Please follow the [Achoo Records Style Guide](STYLE_GUIDE.md) when making changes to the code.
+
+## License
+
+By contributing to Achoo Records, you agree that your contributions will be licensed under the [MIT License](sakasr23040912).
+
+Happy Contributing! 🤧🚀
