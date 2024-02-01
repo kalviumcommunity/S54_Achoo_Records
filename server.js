@@ -13,4 +13,3 @@ app.listen(3000, (error) => {
 app.get("/ping",(req,res)=>{
     res.send("Ping route has been added")
 })
-
