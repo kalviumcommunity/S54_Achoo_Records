@@ -2,10 +2,10 @@
     "name": "s54_achoo_records",
     "version": "1.0.0",
     "description": "Achoo Records is a platform dedicated to showcasing and celebrating extraordinary sneezing achievements worldwide. From the loudest sneezes to the longest and most intense ones, this project compiles an intriguing list of world records in the realm of sneezing.",
-    "main": "backend/index.js",
+    "main": "backend/server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "server":"node server.js"
+        "server": "node server.js"
     },
     "author": "",
     "license": "ISC",
