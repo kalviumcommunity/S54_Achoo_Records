@@ -1,17 +1,22 @@
 const express = require("express");
 const asyncHandler = require('express-async-handler')
 const connectDb = require("./config/DbConnection");
+
+const router = require("./routes/route");
+
 const { connection, default: mongoose } = require("mongoose");
+
 const dotenv = require('dotenv').config()
 
 const app = express()
 
 app.use(express.json())
 
+app.use('/api', router);
+
 connectDb()
 
-
-app.get("/home",(req,res)=>{
+app.get("/",(req,res)=>{
     res.send(mongoose.connection.readyState === 1 ? "Database Connnected " : "Database Disonnected ")
 })
 
