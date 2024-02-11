@@ -1,16 +1,18 @@
 const express = require("express");
 const connectDb = require("./config/DbConnection");
 const { connection } = require("mongoose");
+const router = require("./routes/route");
 const dotenv = require('dotenv').config()
 
 const app = express()
 
 app.use(express.json())
-console.log(process.env.MONGO_URI)
+
+app.use('/api', router);
 
 connectDb()
 
-app.get("/home",(req,res)=>{
+app.get("/",(req,res)=>{
     res.json(connectDb ? "Database Connected" : "Not Connected")    
 })
 
