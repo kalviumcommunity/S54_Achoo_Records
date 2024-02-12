@@ -30,12 +30,12 @@ const Navbar = () => {
 
     <div>
       <Flex>
-        <Link>
+        <Link to='/signin'>
           <Box borderRadius='7px' p='7px 18px' mr='30px' bgColor='blue' color='white'>
             SignIn
           </Box>
         </Link>
-        <Link>
+        <Link to='signup'>
           <Box borderRadius='7px' bgColor='black' mr='30px' p='7px 18px' color='white'>
             SignUp
           </Box>
