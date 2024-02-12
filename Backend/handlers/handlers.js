@@ -7,13 +7,7 @@ const createHandler = (req, res) => {
 const readHandler = (req, res) => {
   const id = req.params.id
   // Logic to read resources
-  if (req.params.id) {
-    // Read a specific resource by ID
-    res.json({ message: `Read resource with ID ${req.params.id}` });
-  } else {
-    // Read all resources
-    res.json({ message: "Read all resources" });
-  }
+    res.json({ message: `Read resource with ID ${ req.params.id}` });
 };
 
 const updateHandler = (req, res) => {
