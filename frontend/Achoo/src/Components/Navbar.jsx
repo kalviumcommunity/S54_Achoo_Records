@@ -69,10 +69,16 @@ const Navbar = () => {
     <div>
       <Flex>
         <Link to='/signin'>
-        <Button bgColor='blue' mr='30px' color='white' _hover={{ bgColor: 'blue.500' }}>LogIn</Button>
+        
+          <Box borderRadius='7px' p='7px 18px' mr='30px' bgColor='blue' color='white'>
+            SignIn
+          </Box>
         </Link>
-        <Link to='/signup'>
-          <Button bgColor='black' mr='30px' color='white' _hover={{ bgColor: 'gray.500' }} >SignUp</Button>
+        <Link to='signup'>
+          <Box borderRadius='7px' bgColor='black' mr='30px' p='7px 18px' color='white'>
+            SignUp
+          </Box>
+
         </Link>
         <IconButton
             aria-label="Toggle Theme"
