@@ -2,6 +2,8 @@
 
 **Render Link** : https://achoo-records.onrender.com
 
+**deployes link** : https://achoo.vercel.app/
+
 ## Project Overview :
 
 Achoo Records is a platform dedicated to showcasing and celebrating extraordinary sneezing achievements worldwide. From the loudest sneezes to the longest and most intense ones, this project compiles an intriguing list of world records in the realm of sneezing.
