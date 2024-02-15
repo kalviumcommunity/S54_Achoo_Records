@@ -1,6 +1,6 @@
 import React from 'react'
-import datas from '../../../../Backend/SneezeRecords.json'
-import { Box, Center, Grid, GridItem,Image,Text,useStyleConfig } from '@chakra-ui/react'
+
+import { Box, Grid,Image,Text,useStyleConfig } from '@chakra-ui/react'
 
 import { useSpring, animated } from 'react-spring';
 
@@ -39,13 +39,35 @@ const Dashboard = () => {
       templateColumns='repeat(3, 1fr)'
       gap='50px'
     >
-      {datas.map((data,i)=>{
-        return (
-            <Box key={i} boxSize='xs' bgColor='#F9EFDB' borderRadius='30px'>
-              <Image borderRadius='28px 7px' src={data.image} />
-            </Box>
-        )
-      })}
+    
+    <Box  boxSize='xs' bgColor='#F9EFDB' borderRadius='30px'>
+          <Image borderRadius='28px 7px' src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' />
+    </Box>
+    <Box  boxSize='xs' bgColor='#F9EFDB' borderRadius='30px'>
+          <Image borderRadius='28px 7px' src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' />
+    </Box>
+
+    <Box  boxSize='xs' bgColor='#F9EFDB' borderRadius='30px'>
+          <Image borderRadius='28px 7px' src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' />
+    </Box>
+
+    <Box  boxSize='xs' bgColor='#F9EFDB' borderRadius='30px'>
+          <Image borderRadius='28px 7px' src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' />
+    </Box>
+
+    <Box  boxSize='xs' bgColor='#F9EFDB' borderRadius='30px'>
+          <Image borderRadius='28px 7px' src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' />
+    </Box>
+
+    <Box  boxSize='xs' bgColor='#F9EFDB' borderRadius='30px'>
+          <Image borderRadius='28px 7px' src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' />
+    </Box>
+    <Box  boxSize='xs' bgColor='#F9EFDB' borderRadius='30px'>
+          <Image borderRadius='28px 7px' src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' />
+    </Box>
+
+
+
     </Grid>
     </>
   )
