@@ -8,12 +8,18 @@ const {
   readHandler,
   updateHandler,
   deleteHandler,
+  readAll
 } = require('../handlers/handlers');
 
 // Create
 router.post('/data', createHandler);
 
 // Read
+
+// router.get('/data', readAll);
+
+router.get('/data', readAll); 
+
 
 router.get('/data/:id', readHandler);
 

@@ -1,16 +1,19 @@
 const express = require("express");
+const app = express()
 const asyncHandler = require('express-async-handler')
 const connectDb = require("./config/DbConnection");
+const cors = require('cors')
 
 const router = require("./routes/route");
 
+const UserModel = require("./DBmodel/schema");
 const { connection, default: mongoose } = require("mongoose");
 
 const dotenv = require('dotenv').config()
 
-const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 app.use('/api', router);
 
@@ -19,6 +22,8 @@ connectDb()
 app.get("/",(req,res)=>{
     res.send(mongoose.connection.readyState === 1 ? "Database Connnected " : "Database Disonnected ")
 })
+
+
 
 app.listen(3000, (error) => {
     if (error) {
@@ -29,5 +34,5 @@ app.listen(3000, (error) => {
 });
 
 app.get("/ping",(req,res)=>{
-    res.send("Ping route has been added")
+    res.send("pong")
 })
