@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const AchooModel = require('../DBmodel/schema');
+const AchooModel = require('../DBmodel/entities');
 
 // handlers.js
 const createHandler = (req, res) => {

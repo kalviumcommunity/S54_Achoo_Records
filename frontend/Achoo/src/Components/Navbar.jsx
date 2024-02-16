@@ -57,7 +57,7 @@ const Navbar = () => {
         <Button variant='ghost'> Contact </Button>
       </Link>
       :
-      <Link style={{  textDecoration: 'none',padding:"5px 10px" }} to='/contact'>
+      <Link style={{  textDecoration: 'none',padding:"5px 10px" }} to='/adddata'>
         <Button variant='ghost'> Add </Button>
       </Link>
       :
@@ -68,7 +68,7 @@ const Navbar = () => {
 
     <div>
       <Flex>
-        <Link to='/signin'>
+        <Link to='/login'>
         <Button bgColor='blue' mr='30px' color='white' _hover={{ bgColor: 'blue.500' }}>LogIn</Button>
         </Link>
         <Link to='/signup'>
