@@ -57,7 +57,7 @@ const Navbar = () => {
         <Button variant='ghost'> Contact </Button>
       </Link>
       :
-      <Link style={{  textDecoration: 'none',padding:"5px 10px" }} to='/adddata'>
+      <Link style={{  textDecoration: 'none',padding:"5px 10px" }} to='/create'>
         <Button variant='ghost'> Add </Button>
       </Link>
       :

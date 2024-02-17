@@ -15,7 +15,7 @@ const signUpHandler = require('../handlers/signupHandler');
 router.post('/signup', signUpHandler);
 
 // Create
-router.post('/data', createHandler);
+router.post('/create', createHandler);
 
 // Read all
 router.get('/data', readAll);
