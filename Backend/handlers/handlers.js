@@ -1,43 +1,114 @@
 const mongoose = require('mongoose');
-const AchooModel = require('../DBmodel/schema');
+const AchooModel = require('../DBmodel/entities');
 
 // handlers.js
-const createHandler = (req, res) => {
-  // Logic to create a new resource
-  res.json({ message: "Records created successfully" });
+const createHandler = async (req, res) => {
+  const data = req.body;
+  const { video_link, image_link, description } = data;
+  console.log(data);
+
+  try {
+    // Validate input data
+    if (!video_link || !image_link || !description) {
+      throw new Error('Please provide valid data');
+    }
+
+    // Check if the data already exists
+    const existingData = await AchooModel.findOne({ video_link: video_link });
+    if (existingData) {
+      throw new Error('Data with the same video link already exists');
+    }
+
+    // Create a new instance of the AchooModel
+    const newData = new AchooModel({
+      video_link: video_link,
+      image_link: image_link,
+      description: description,
+    });
+
+    // Save the new data to the database
+    const result = await newData.save();
+
+    console.log('Data added successfully:', result);
+
+    // Send success response to the front end
+    res.json({ success: true, message: 'Data added successfully' });
+
+  } catch (error) {
+    console.error('Error adding data to database:', error);
+
+    // Send error response to the front end
+    res.status(500).json({ success: false, message: 'Failed to add data to the database' });
+  }
 };
 
-const readAll = async (req,res) =>{
+
+
+const readAll = async (req, res) => {
   try {
-    let datas
-    await AchooModel.find().then((data)=>{
-      datas = data
-    })
+    // Retrieve all data from the database
+    const datas = await AchooModel.find();
     res.send(datas);
   } catch (error) {
-    res.status(500).json({ error: error.message});
+    console.error('Error reading data from the database:', error);
+    res.status(500).json({ error: 'Failed to retrieve data from the database' });
   }
-
-}
-
-const readHandler = (req, res) => {
-  const id = req.params.id
-  // Logic to read Records
-    res.json({ message: `Read Records with ID ${ req.params.id}` });
 };
 
-const updateHandler = (req, res) => {
-  // Logic to update a Records
-  res.json({
-    message: `Records with ID ${req.params.id} updated successfully`,
-  });
+const readHandler = async (req, res) => {
+  try {
+    const id = req.params.id;
+    // Retrieve a record by ID from the database
+    const record = await AchooModel.findById(id);
+    if (!record) {
+      throw new Error('Record not found');
+    }
+
+    res.json({ record });
+  } catch (error) {
+    console.error('Error reading a record from the database:', error);
+    res.status(500).json({ error: 'Failed to retrieve the record from the database' });
+  }
 };
 
-const deleteHandler = (req, res) => {
-  // Logic to delete a Records
-  res.json({
-    message: `Records with ID ${req.params.id} deleted successfully`,
-  });
+const updateHandler = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Validate input data
+    const { video_link, image_link, description } = req.body;
+    if (!video_link || !image_link || !description) {
+      throw new Error('Please provide valid data for update');
+    }
+
+    // Update a record by ID in the database
+    const updatedRecord = await AchooModel.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedRecord) {
+      throw new Error('Record not found for update');
+    }
+
+    res.json({ updatedRecord });
+  } catch (error) {
+    console.error('Error updating a record in the database:', error);
+    res.status(500).json({ error: 'Failed to update the record in the database' });
+  }
+};
+
+const deleteHandler = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Delete a record by ID from the database
+    const deletedRecord = await AchooModel.findByIdAndDelete(id);
+    if (!deletedRecord) {
+      throw new Error('Record not found for delete');
+    }
+
+    res.json({ message: 'Record deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting a record from the database:', error);
+    res.status(500).json({ error: 'Failed to delete the record from the database' });
+  }
 };
 
 module.exports = {
@@ -45,5 +116,5 @@ module.exports = {
   readHandler,
   updateHandler,
   deleteHandler,
-  readAll
+  readAll,
 };

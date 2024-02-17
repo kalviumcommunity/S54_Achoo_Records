@@ -1,4 +1,3 @@
-// routes.js
 const express = require('express');
 
 const router = express.Router();
@@ -10,23 +9,24 @@ const {
   deleteHandler,
   readAll
 } = require('../handlers/handlers');
+const signUpHandler = require('../handlers/signupHandler');
+
+// Signup
+router.post('/signup', signUpHandler);
 
 // Create
-router.post('/data', createHandler);
+router.post('/create', createHandler);
 
-// Read
+// Read all
+router.get('/data', readAll);
 
-// router.get('/data', readAll);
-
-router.get('/data', readAll); 
-
-
+// Read by ID
 router.get('/data/:id', readHandler);
 
-// Update
+// Update by ID
 router.put('/data/:id', updateHandler);
 
-// Delete
+// Delete by ID
 router.delete('/data/:id', deleteHandler);
 
 module.exports = router;

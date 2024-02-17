@@ -9,7 +9,7 @@ const Heading = () => {
   const globeProps = useSpring({
     from: { transform: 'rotate(0deg)' },
     to: { transform: 'rotate(360deg)' },
-    config: { duration: 2000 },
+    config: { duration: 15000 },
     loop: true ,
   });
 

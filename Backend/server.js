@@ -1,19 +1,19 @@
 const express = require("express");
 const app = express()
-const asyncHandler = require('express-async-handler')
+
 const connectDb = require("./config/DbConnection");
 const cors = require('cors')
 
 const router = require("./routes/route");
 
-const UserModel = require("./DBmodel/schema");
+const UserModel = require("./DBmodel/entities");
 const { connection, default: mongoose } = require("mongoose");
 
 const dotenv = require('dotenv').config()
 
 
-app.use(express.json())
 app.use(cors())
+app.use(express.json())
 
 app.use('/api', router);
 
