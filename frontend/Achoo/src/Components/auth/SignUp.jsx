@@ -21,24 +21,29 @@ const SignUp = () => {
         toast.error('Ensure passwords match.');
         return;
       }
-
+  
       // Send data to backend for signup
-      const response = await fetch('https://achoo-records.onrender.com/api/signup', {
+      const response = await fetch('http://127.0.0.1:3000/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body:{
-          "username " : username , "password" : password
-        }
+        body: JSON.stringify({ // Convert the object to a JSON string
+          username,
+          password,
+        }),
       });
-
+  
       if (response.ok) {
         // Successfully signed up
         toast.success('Sign up successful! You can now log in.');
         setUsername('');
         setPassword('');
         setConfirmPassword('');
+        setTimeout(() => {
+          // Use Link to navigate to the desired path
+          window.location.href = "/login";
+        }, 3000);
       } else {
         const result = await response.json();
         toast.error(result.message);
@@ -47,7 +52,6 @@ const SignUp = () => {
       console.error('Error:', error);
     }
   };
-  
   
 
   return (

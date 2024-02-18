@@ -1,5 +1,3 @@
-// VideoForm.js
-
 import React, { useState } from 'react';
 import {
   VStack,
@@ -11,11 +9,11 @@ import {
   Center,
   Heading,
 } from '@chakra-ui/react';
-
 import { ToastContainer, toast as notifyToast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useParams, Link } from 'react-router-dom';
 
-const AddData = () => {
+const EditData = () => {
   const [formData, setFormData] = useState({
     video_link: '',
     image_link: '',
@@ -24,20 +22,20 @@ const AddData = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { video_link, image_link, description } = formData;
+  const { id } = useParams();
+  const toast = useToast();
 
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
 
-      // Check if all fields are filled
       if (!video_link || !image_link || !description) {
         notifyToast.error('Please fill all the fields');
         return;
       }
 
-      // Send data to the backend for adding to the database
-      const response = await fetch('http://127.0.0.1:3000/api/create', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:3000/api/edit/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -45,20 +43,19 @@ const AddData = () => {
       });
 
       if (response.ok) {
-        const result = await response.json();
-
-        // Successfully added to the database
-        notifyToast.success(result.message);
-        setTimeout(() => {
-          // Use Link to navigate to the desired path
-          window.location.href = "/";
-        }, 3000);
+        notifyToast.success('Video edited successfully!');
 
         setFormData({
           video_link: '',
           image_link: '',
           description: '',
         });
+
+        // Redirect to the home page ("/") after successful edit with a delay of 3 seconds
+        setTimeout(() => {
+          // Use Link to navigate to the desired path
+          window.location.href = "/";
+        }, 3000);
       } else {
         const result = await response.json();
         notifyToast.error(result.message);
@@ -71,23 +68,21 @@ const AddData = () => {
     }
   };
 
-   
-
   return (
     <>
       <Center>
         <Box maxW="lg" w="full">
           <VStack spacing={4}>
-            <Heading mb={4}>Add Your Own Sneeze Video</Heading>
+            <Heading mb={4}>Edit Sneeze Video</Heading>
             <Input
-              placeholder="Video Link"
+              placeholder="New Video Link"
               value={video_link}
               onChange={(e) =>
                 setFormData({ ...formData, video_link: e.target.value })
               }
             />
             <Input
-              placeholder="Image Link"
+              placeholder="New Image Link"
               value={image_link}
               onChange={(e) =>
                 setFormData({ ...formData, image_link: e.target.value })
@@ -116,4 +111,4 @@ const AddData = () => {
   );
 };
 
-export default AddData;
+export default EditData;

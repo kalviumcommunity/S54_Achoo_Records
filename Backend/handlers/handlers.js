@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const AchooModel = require('../DBmodel/entities');
+const User = require('../DBmodel/user');
 
 // handlers.js
 const createHandler = async (req, res) => {
@@ -42,9 +43,7 @@ const createHandler = async (req, res) => {
   }
 };
 
-
-
-const readAll = async (req, res) => {
+const readAllHandler = async (req, res) => {
   try {
     // Retrieve all data from the database
     const datas = await AchooModel.find();
@@ -77,6 +76,7 @@ const updateHandler = async (req, res) => {
 
     // Validate input data
     const { video_link, image_link, description } = req.body;
+
     if (!video_link || !image_link || !description) {
       throw new Error('Please provide valid data for update');
     }
@@ -94,27 +94,85 @@ const updateHandler = async (req, res) => {
   }
 };
 
+
 const deleteHandler = async (req, res) => {
   try {
     const id = req.params.id;
-
+    
     // Delete a record by ID from the database
     const deletedRecord = await AchooModel.findByIdAndDelete(id);
     if (!deletedRecord) {
       throw new Error('Record not found for delete');
     }
-
     res.json({ message: 'Record deleted successfully' });
+    
   } catch (error) {
     console.error('Error deleting a record from the database:', error);
     res.status(500).json({ error: 'Failed to delete the record from the database' });
   }
 };
 
+const signupHandler =  async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Check if the username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username already exists' });
+    }
+
+    // Create a new user
+    const newUser = new User({
+      username,
+      password, 
+    });
+
+    // Save the user to the database
+    await newUser.save();
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+// backend route for handling login (e.g., loginHandler.js)
+const loginHandler = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Check if the username exists in the database
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+
+    // Check if the provided password matches the stored hash
+    const isPasswordValid = await user.comparePassword(password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+
+    // Authentication successful
+    res.status(200).json({ message: 'Login successful' });
+    
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
 module.exports = {
   createHandler,
   readHandler,
   updateHandler,
   deleteHandler,
-  readAll,
+  readAllHandler,
+  signupHandler,
+  loginHandler,
 };

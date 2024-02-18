@@ -7,26 +7,30 @@ const {
   readHandler,
   updateHandler,
   deleteHandler,
-  readAll
+  readAllHandler,
+  signupHandler,
+  loginHandler
 } = require('../handlers/handlers');
-const signUpHandler = require('../handlers/signupHandler');
 
 // Signup
-router.post('/signup', signUpHandler);
+router.post('/signup',signupHandler);
+
+// Login
+router.post('/login',loginHandler);
 
 // Create
 router.post('/create', createHandler);
 
 // Read all
-router.get('/data', readAll);
+router.get('/data', readAllHandler);
 
 // Read by ID
 router.get('/data/:id', readHandler);
 
 // Update by ID
-router.put('/data/:id', updateHandler);
+router.put('/edit/:id', updateHandler);
 
 // Delete by ID
-router.delete('/data/:id', deleteHandler);
+router.delete('/delete/:id', deleteHandler);
 
 module.exports = router;

@@ -16,32 +16,35 @@ const Login = () => {
         toast.error('Please fill in all fields');
         return;
       }
-
-      const response = await fetch('/api/login', {
+  
+      const response = await fetch('http://127.0.0.1:3000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
       });
-
-      const result = await response.json();
-
+  
       if (response.ok) {
         // Successfully logged in
+        const result = await response.json();
         setErrorMessage('');
-        toast.success('Login successful!');
-        return;
+        toast.success(result.message || 'Login successful!');
+        setTimeout(() => {
+
+          window.location.href = "/";
+        }, 3000);
       } else {
         // Incorrect password or username doesn't exist
+        const result = await response.json();
         setErrorMessage(result.message);
-        toast.error(result.message);
-        return; // Optionally show an error toast
+        toast.error(result.message || 'Login failed');
       }
     } catch (error) {
       console.error('Error:', error);
     }
   };
+  
 
   return (
     <>
