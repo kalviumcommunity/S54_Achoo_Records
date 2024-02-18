@@ -7,6 +7,7 @@ import Dashboard from "../Dashboard";
 import Login from "../auth/Login";
 import SignUp from "../auth/SignUp";
 import AddData from "../AddData";
+import EditData from "../EditData";
 
 const AllRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AllRoutes = () => {
             <Route path='/create' element={<AddData />} />
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<SignUp />} />
+            <Route path='/edit/:id' element={<EditData />} />
         </Routes>
     </>
   )
