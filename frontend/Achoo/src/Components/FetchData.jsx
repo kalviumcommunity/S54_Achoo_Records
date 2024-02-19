@@ -26,7 +26,7 @@ const FetchData = () => {
 
   const handleDelete = async (id) => {
     // Ask for confirmation before proceeding with deletion
-    const isConfirmed = window.confirm('Are you sure you want to delete this video?');
+    const isConfirmed = window.confirm('Are you sure you want to delete this data?');
   
     if (!isConfirmed) {
       return; // Do nothing if the user cancels the confirmation
@@ -84,7 +84,9 @@ const FetchData = () => {
                   transition='opacity 0.3s'
                 >
                   <Skeleton isLoaded={true} height='100%'>
-                    <Image src={data.image_link} alt='img' height='300px' borderRadius='15px 50px' className='image' />
+                    <a href={data.video_link}>
+                      <Image src={data.image_link} alt='img' height='300px' borderRadius='15px 50px' className='image' />
+                    </a>
                   </Skeleton>
                   <Box
                     className='description'
