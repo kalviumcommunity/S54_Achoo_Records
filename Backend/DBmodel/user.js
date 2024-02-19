@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Joi = require('joi');
+
+// Define Joi schema for input validation
+const userValidationSchema = Joi.object({
+  username: Joi.string().alphanum().min(3).max(30).required(),
+  password: Joi.string().min(6).required(),
+});
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -36,6 +43,11 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   } catch (error) {
     throw error;
   }
+};
+
+// Add a static method to validate user input using Joi
+userSchema.statics.validateInput = function (userInput) {
+  return userValidationSchema.validate(userInput);
 };
 
 const User = mongoose.model('User', userSchema);
