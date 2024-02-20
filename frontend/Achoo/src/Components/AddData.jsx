@@ -36,7 +36,7 @@ const AddData = () => {
       }
 
       // Send data to the backend for adding to the database
-      const response = await fetch('http://127.0.0.1:3000/api/create', {
+      const response = await fetch('https://achoo-records.onrender.com/api/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ const EditData = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:3000/api/edit/${id}`, {
+      const response = await fetch(`https://achoo-records.onrender.com/api/edit/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const AchooModel = require('../DBmodel/entities');
+const {AchooModel} = require('../DBmodel/entities');
 const User = require('../DBmodel/user');
 
 // handlers.js
@@ -44,14 +44,14 @@ const createHandler = async (req, res) => {
 
 const readAllHandler = async (req, res) => {
   try {
-
     const datas = await AchooModel.find();
-    res.send(datas);
+    res.json(datas);
   } catch (error) {
     console.error('Error reading data from the database:', error);
     res.status(500).json({ error: 'Failed to retrieve data from the database' });
   }
 };
+
 
 const readHandler = async (req, res) => {
   try {

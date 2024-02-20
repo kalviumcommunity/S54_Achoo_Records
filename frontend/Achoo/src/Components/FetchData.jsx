@@ -33,7 +33,7 @@ const FetchData = () => {
     }
   
     try {
-      const response = await axios.delete(`http://127.0.0.1:3000/api/delete/${id}`);
+      const response = await axios.delete(`https://achoo-records.onrender.com/api/delete/${id}`);
   
       if (response.status === 200) {
         toast({
