@@ -2,11 +2,15 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
 
-// Define Joi schema for input validation
+
 const userValidationSchema = Joi.object({
   username: Joi.string().alphanum().min(3).max(30).required(),
-  password: Joi.string().min(6).required(),
+  password: Joi.string()
+    .pattern(new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*])(?=.{7,})'))
+    .required(),
 });
+
+
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -20,7 +24,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Hash the password before saving it to the database
 userSchema.pre('save', async function (next) {
   const user = this;
 
@@ -50,6 +53,6 @@ userSchema.statics.validateInput = function (userInput) {
   return userValidationSchema.validate(userInput);
 };
 
-const User = mongoose.model('User', userSchema);
+const UserModel = mongoose.model('User', userSchema);
 
-module.exports = User;
+module.exports = UserModel;

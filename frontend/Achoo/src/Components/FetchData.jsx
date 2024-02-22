@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Image, Box, Skeleton, IconButton, useToast } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+// import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const FetchData = () => {
   const [achooData, setAchooData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,7 +106,13 @@ const FetchData = () => {
                   >
                     {data.description}
                   </Box>
-                  <Link to={`/edit/${data._id}`}>
+                  <Link
+                      to={`/edit/${data._id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate(`/edit/${data._id}`, { state: { data } });
+                      }}
+                  >
                     <Box
                       className='edit-button'
                       position='absolute'

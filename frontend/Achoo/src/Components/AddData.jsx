@@ -49,6 +49,11 @@ const AddData = () => {
 
         // Successfully added to the database
         notifyToast.success(result.message);
+
+        setTimeout(() => {
+          // Use Link to navigate to the desired path
+          window.location.href = "/";
+        }, 1000);
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 
         setFormData({

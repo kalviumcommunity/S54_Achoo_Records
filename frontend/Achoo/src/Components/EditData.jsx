@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   VStack,
   Input,
@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { ToastContainer, toast as notifyToast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 const EditData = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +23,16 @@ const EditData = () => {
 
   const { video_link, image_link, description } = formData;
   const { id } = useParams();
+  const location = useLocation();
   const toast = useToast();
+
+  // Use useEffect to set the initial form data when the component mounts
+  useEffect(() => {
+    // Check if state is available in the location
+    if (location.state && location.state.data) {
+      setFormData(location.state.data);
+    }
+  }, [location.state]);
 
   const handleSubmit = async () => {
     try {
@@ -44,18 +53,17 @@ const EditData = () => {
 
       if (response.ok) {
         notifyToast.success('Video edited successfully!');
+        setTimeout(() => {
+          // Use Link to navigate to the desired path
+          window.location.href = "/";
+        }, 1000);
 
         setFormData({
           video_link: '',
           image_link: '',
           description: '',
         });
-
-        // Redirect to the home page ("/") after successful edit with a delay of 3 seconds
-        setTimeout(() => {
-          // Use Link to navigate to the desired path
-          window.location.href = "/";
-        }, 3000);
+        
       } else {
         const result = await response.json();
         notifyToast.error(result.message);
@@ -67,6 +75,7 @@ const EditData = () => {
       setIsLoading(false);
     }
   };
+
 
   return (
     <>

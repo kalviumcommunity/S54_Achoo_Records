@@ -9,7 +9,7 @@ const achooSchema = Joi.object({
 });
 
 // Define Mongoose schema for MongoDB
-const achooData = mongoose.Schema({
+const achooDataSchema = new mongoose.Schema({
   video_link: {
     type: String,
     required: true,
@@ -27,8 +27,7 @@ const achooData = mongoose.Schema({
   },
 });
 
-// Mongoose model
-const AchooModel = mongoose.model("achoo_entities", achooData);
+const AchooModel = mongoose.model("achoo_entities", achooDataSchema);
 
 // Function to validate input using Joi
 const validateAchooInput = (inputData) => {
