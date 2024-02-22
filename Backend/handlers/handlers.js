@@ -111,38 +111,31 @@ const deleteHandler = async (req, res) => {
   }
 };
 
-const signupHandler = async (req, res) => {
+const signupHandler =  async (req, res) => {
   const { username, password } = req.body;
 
-  // Validate the user input using Joi schema
-  const { error, value } = userValidationSchema.validate({ username, password });
-
-  if (error) {
-    // If validation fails, return an error response
-    return res.status(400).json({ message: error.details[0].message });
-  }
-
   try {
-    // Check if the username already exists
+
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: 'Username already exists' });
     }
 
-    // Create a new user using the validated user input
-    const newUser = new User(value);
 
-    // Save the new user to the database
+    const newUser = new User({
+      username,
+      password, 
+    });
+
+
     await newUser.save();
 
-    // Return a success response
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-
 
 const loginHandler = async (req, res) => {
   const { username, password } = req.body;
@@ -154,20 +147,16 @@ const loginHandler = async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
+
     const isPasswordValid = await user.comparePassword(password);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Set the user credentials in a cookie
-    res.cookie('user', JSON.stringify({ username, userId: user._id }), {
-      maxAge: 900000, // Set the expiration time for the cookie
-      httpOnly: true,
-    });
 
     res.status(200).json({ message: 'Login successful' });
-
+    
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
