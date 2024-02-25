@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const {AchooModel} = require('../DBmodel/entities');
 const User = require('../DBmodel/user');
+const jwt = require('jsonwebtoken');
 
 // handlers.js
 const createHandler = async (req, res) => {
@@ -111,31 +112,30 @@ const deleteHandler = async (req, res) => {
   }
 };
 
-const signupHandler =  async (req, res) => {
+const signupHandler = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-
+    // Check if the username already exists
     const existingUser = await User.findOne({ username });
+
     if (existingUser) {
-      return res.status(400).json({ message: 'Username already exists' });
+      return res.json({ message: 'Username already exists' });
     }
-
-
     const newUser = new User({
       username,
-      password, 
+      password,
     });
-
 
     await newUser.save();
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    console.error('Error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+
 
 const loginHandler = async (req, res) => {
   const { username, password } = req.body;
@@ -147,21 +147,23 @@ const loginHandler = async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-
     const isPasswordValid = await user.comparePassword(password);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
+    // User authenticated, generate and send a token
+    const token = jwt.sign({ userId: user._id }, 'sak2304', { expiresIn: '7d' });
 
-    res.status(200).json({ message: 'Login successful' });
+    res.status(200).json({ message: 'Login successful', token });
     
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
 
 
 module.exports = {

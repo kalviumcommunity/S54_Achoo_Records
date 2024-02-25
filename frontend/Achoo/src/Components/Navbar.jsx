@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../index.css'
 import { Link } from 'react-router-dom'
 import Contact from './Contact'
@@ -11,11 +11,17 @@ import { FiSun, FiMoon } from 'react-icons/fi';
 const Navbar = () => {
 	const { colorMode, toggleColorMode } = useColorMode()
 	const isDark = colorMode === 'dark'
+  const {Logout,setLogout} = useState(false)
 
   const { isOpen ,onClose, onToggle } = useDisclosure()
 
   const handleClose = () => {
     onClose();
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    window.location.href = "/";
   };
 
   return (
@@ -68,12 +74,19 @@ const Navbar = () => {
 
     <div>
       <Flex>
-        <Link to='/login'>
-        <Button bgColor='blue' mr='30px' color='white' _hover={{ bgColor: 'blue.500' }}>LogIn</Button>
-        </Link>
-        <Link to='/signup'>
-          <Button bgColor='black' mr='30px' color='white' _hover={{ bgColor: 'gray.500' }} >SignUp</Button>
-        </Link>
+        {
+        localStorage.authToken ?
+        <Button onClick={handleLogout} bgColor='blue' mr='30px' color='white' _hover={{ bgColor: 'blue.500' }}>Logout</Button> 
+        :
+        <div>
+          <Link to='/login'>
+              <Button bgColor='blue' mr='30px' color='white' _hover={{ bgColor: 'blue.500' }}>Login</Button>
+          </Link>
+          <Link to='/signup'>
+            <Button bgColor='black' mr='30px' color='white' _hover={{ bgColor: 'gray.500' }} >SignUp</Button>
+          </Link>
+        </div>
+        }
         <IconButton
             aria-label="Toggle Theme"
             icon={colorMode === 'light' ? <FiMoon /> : <FiSun />}
