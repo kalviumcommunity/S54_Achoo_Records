@@ -4,12 +4,15 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 // import { Link, useHistory } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
+import { getCookie } from './Cookie';
 
 const FetchData = () => {
   const [achooData, setAchooData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
   const navigate = useNavigate();
+  const userCookie = getCookie("username")
+  console.log(userCookie)
 
 
   useEffect(() => {
@@ -27,8 +30,23 @@ const FetchData = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id,username) => {
     // Ask for confirmation before proceeding with deletion
+
+    if(username != getCookie("username")){
+
+      toast({
+          title: 'Error',
+          description: 'Unauthorized ! Failed to delete video',
+          status: 'error',
+          position: 'top-right', 
+          duration: 1500,
+          isClosable: true,
+        });
+      
+      return
+    }
+
     const isConfirmed = window.confirm('Are you sure you want to delete this data?');
   
     if (!isConfirmed) {
@@ -44,12 +62,11 @@ const FetchData = () => {
           description: 'Video deleted successfully!',
           status: 'success',
           position: 'top-right',
-          duration: 3000,
+          duration: 1500,
           isClosable: true,
-          colorScheme: 'red', // Set the color scheme to red
+          colorScheme: 'red',
         });
   
-        // Update the state to reflect the deleted data
         setAchooData((prevData) => prevData.filter((data) => data._id !== id));
       } else {
         toast({
@@ -57,7 +74,7 @@ const FetchData = () => {
           description: 'Failed to delete video. Please try again.',
           status: 'error',
           position: 'top-right', // Set the position to top-right
-          duration: 3000,
+          duration: 1500,
           isClosable: true,
         });
       }
@@ -107,10 +124,24 @@ const FetchData = () => {
                     {data.description}
                   </Box>
                   <Link
-                      to={`/edit/${data._id}`}
+                    // to={!userCookie ? `/edit/${data._id}` : `/`}
                       onClick={(e) => {
                         e.preventDefault();
-                        navigate(`/edit/${data._id}`, { state: { data } });
+                        navigate( 
+                          data.username === userCookie 
+                          ? 
+                          `/edit/${data._id}` 
+                          : 
+                          toast({
+                              title: 'Error',
+                              description: 'Unauthorized ! Failed to Edit video',
+                              status: 'error',
+                              position: 'top-right', 
+                              duration: 1500,
+                              isClosable: true,
+                            })
+                          , 
+                          { state: { data } });
                       }}
                   >
                     <Box
@@ -146,7 +177,7 @@ const FetchData = () => {
                       icon={<DeleteIcon />}
                       variant='ghost'
                       size='sm'
-                      onClick={() => handleDelete(data._id)}
+                      onClick={() => handleDelete(data._id,data.username)}
                     />
                   </Box>
                 </Box>

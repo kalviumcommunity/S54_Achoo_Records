@@ -14,13 +14,19 @@ import {
 
 import { ToastContainer, toast as notifyToast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getCookie } from './Cookie';
 
 const AddData = () => {
+
+  const username = getCookie("username")
+
   const [formData, setFormData] = useState({
     video_link: '',
     image_link: '',
     description: '',
+    username:username,
   });
+
   const [isLoading, setIsLoading] = useState(false);
 
   const { video_link, image_link, description } = formData;
@@ -60,7 +66,9 @@ const AddData = () => {
           video_link: '',
           image_link: '',
           description: '',
+          username:'',
         });
+        
       } else {
         const result = await response.json();
         notifyToast.error(result.message);

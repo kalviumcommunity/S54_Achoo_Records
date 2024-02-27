@@ -10,7 +10,8 @@ const SignUp = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Added state for password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSignUp = async () => {
     try {
@@ -24,7 +25,7 @@ const SignUp = () => {
         return;
       }
 
-      const response = await axios.post('http://localhost:3000/api/signup', {
+      const response = await axios.post('https://achoo-records.onrender.com/api/signup', {
         username,
         password,
       });
@@ -39,6 +40,7 @@ const SignUp = () => {
         setTimeout(() => {
           window.location.href = "/login";
         }, 1000);
+        
       } else {
         const result = response.data;
         toast.error(result.message || 'Username already exists');
@@ -52,6 +54,10 @@ const SignUp = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleToggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <>
       <Box maxW="md" mx="auto" mt={8} p={4} borderWidth="1px" borderRadius="md">
@@ -63,27 +69,36 @@ const SignUp = () => {
           onChange={(e) => setUsername(e.target.value)}
         />
         <InputGroup size="md">
-          <Input
-            pr="4.5rem"
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            mb={4}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleTogglePasswordVisibility} bgColor="white">
-              {showPassword ? <FiEyeOff /> : <FiEye />}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
         <Input
-          type="password"
+          pr="4.5rem"
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          mb={4}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <InputRightElement width="4.5rem">
+          <Button h="1.75rem" size="sm" onClick={handleTogglePasswordVisibility} bgColor="white">
+            {showPassword ? <FiEyeOff /> : <FiEye />}
+          </Button>
+        </InputRightElement>
+      </InputGroup>
+
+      <InputGroup size="md">
+        <Input
+          pr="4.5rem"
+          type={showConfirmPassword ? "text" : "password"}
           placeholder="Confirm Password"
           mb={4}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
+        <InputRightElement width="4.5rem">
+          <Button h="1.75rem" size="sm" onClick={handleToggleConfirmPasswordVisibility} bgColor="white">
+            {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+          </Button>
+        </InputRightElement>
+      </InputGroup>
         <Button colorScheme="teal" onClick={handleSignUp}>
           Sign Up
         </Button>

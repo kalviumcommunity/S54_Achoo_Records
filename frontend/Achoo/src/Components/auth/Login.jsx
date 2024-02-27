@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { createCookie } from '../Cookie';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -20,7 +21,7 @@ const Login = () => {
       }
   
       const response = await axios.post(
-        'http://127.0.0.1:3000/api/login',
+        'https://achoo-records.onrender.com/api/login',
         { username, password },
         {
           headers: {
@@ -31,20 +32,17 @@ const Login = () => {
   
       // Assuming a successful response returns status 200
       if (response.status === 200) {
-        const result = response.data; // Access response data directly
+        const result = response.data;
         setErrorMessage('');
         toast.success(result.message || 'Login successful!');
-  
-        // Store user login information in a cookie
-        document.cookie = `username=${username}; path=/;`;
-        document.cookie = `password=${password}; path=/;`;
-  
-        // Store the authentication token in localStorage or sessionStorage
-        localStorage.setItem('authToken', result.token); // Replace 'token' with your actual token property
-  
+
+        createCookie("username",username)
+        createCookie("authToken",result.token)
+
         setTimeout(() => {
           window.location.href = "/";
         }, 1000);
+
       } else {
         // If the response status is not OK, handle the error
         console.error('Server error:', response.status);

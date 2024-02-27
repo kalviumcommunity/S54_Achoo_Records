@@ -8,6 +8,7 @@ import Login from "../auth/Login";
 import SignUp from "../auth/SignUp";
 import AddData from "../AddData";
 import EditData from "../EditData";
+import AllPosts from "../AllPosts";
 
 const AllRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AllRoutes = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<SignUp />} />
             <Route path='/edit/:id' element={<EditData />} />
+            <Route path='/data' element={<AllPosts />} />
         </Routes>
     </>
   )

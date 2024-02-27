@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
-const {AchooModel} = require('../DBmodel/entities');
-const User = require('../DBmodel/user');
+const AchooModel = require('../DBmodel/entities');
+const UserModel = require('../DBmodel/user');
 const jwt = require('jsonwebtoken');
 
 // handlers.js
 const createHandler = async (req, res) => {
+
   const data = req.body;
-  const { video_link, image_link, description } = data;
-  console.log(data);
+
+  const { video_link, image_link, description , username } = data;
 
   try {
 
@@ -25,6 +26,7 @@ const createHandler = async (req, res) => {
       video_link: video_link,
       image_link: image_link,
       description: description,
+      username: username,
     });
 
     
@@ -45,30 +47,41 @@ const createHandler = async (req, res) => {
 
 const readAllHandler = async (req, res) => {
   try {
-    const datas = await AchooModel.find();
-    res.json(datas);
+    const data = await AchooModel.find();
+    res.json(data);
   } catch (error) {
     console.error('Error reading data from the database:', error);
     res.status(500).json({ error: 'Failed to retrieve data from the database' });
   }
 };
 
+const readAllUsers = async (req, res) => {
+
+  try {
+    const data = await UserModel.find();
+    res.json(data);
+  } catch (error) {
+    console.error('Error reading data from the database:', error);
+    res.status(500).json({ error: 'Failed to retrieve data from the database' });
+  }
+
+};
 
 const readHandler = async (req, res) => {
   try {
-    const id = req.params.id;
+    const username = req.params.username;
 
-    const record = await AchooModel.findById(id);
+    const record = await AchooModel.find({ username });
     if (!record) {
       throw new Error('Record not found');
     }
 
     res.json({ record });
   } catch (error) {
-    console.error('Error reading a record from the database:', error);
     res.status(500).json({ error: 'Failed to retrieve the record from the database' });
   }
 };
+
 
 const updateHandler = async (req, res) => {
   try {
@@ -117,19 +130,19 @@ const signupHandler = async (req, res) => {
 
   try {
     // Check if the username already exists
-    const existingUser = await User.findOne({ username });
+    const existingUser = await UserModel.findOne({ username });
 
     if (existingUser) {
       return res.json({ message: 'Username already exists' });
     }
-    const newUser = new User({
+    const newUser = new UserModel({
       username,
       password,
     });
 
     await newUser.save();
 
-    res.status(201).json({ message: 'User registered successfully' });
+    res.status(201).json({ message: 'UserModel registered successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
   }
@@ -141,7 +154,7 @@ const loginHandler = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username });
+    const user = await UserModel.findOne({ username });
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
@@ -153,17 +166,20 @@ const loginHandler = async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // User authenticated, generate and send a token
-    const token = jwt.sign({ userId: user._id }, 'sak2304', { expiresIn: '7d' });
+    // UserModel authenticated, generate and send a token
+    const token = jwt.sign({ userId: user._id }, `${process.env.SECURITY_KEY}`, { expiresIn: '7d' });
+
+    // Set the JWT token as a cookie
+    res.cookie('authToken', token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, path: '/' });
 
     res.status(200).json({ message: 'Login successful', token });
     
   } catch (error) {
+
     console.error('Error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
-};
-
+}
 
 
 module.exports = {
@@ -174,4 +190,5 @@ module.exports = {
   readAllHandler,
   signupHandler,
   loginHandler,
+  readAllUsers
 };
