@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Image, Box, Skeleton, IconButton, useToast } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
-// import { Link, useHistory } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { getCookie } from './Cookie';
 
