@@ -6,14 +6,15 @@ const cors = require('cors')
 
 const router = require("./routes/route");
 
-const UserModel = require("./DBmodel/entities");
-const { connection, default: mongoose } = require("mongoose");
+const { default: mongoose } = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 const dotenv = require('dotenv').config()
 
 
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser())
 
 app.use('/api', router);
 

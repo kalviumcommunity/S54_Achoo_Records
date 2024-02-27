@@ -1,12 +1,15 @@
-// Login.js
 import React, { useState } from 'react';
-import { Box, Heading, Input, Button, Text } from '@chakra-ui/react';
+import { Box, Heading, Input, Button, Text, InputGroup, InputRightElement } from '@chakra-ui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { createCookie } from '../Cookie';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // Added state for password visibility
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
@@ -17,34 +20,46 @@ const Login = () => {
         return;
       }
   
-      const response = await fetch('https://achoo-records.onrender.com/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await axios.post(
+        'https://achoo-records.onrender.com/api/login',
+        { username, password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
   
-      if (response.ok) {
-        // Successfully logged in
-        const result = await response.json();
+      // Assuming a successful response returns status 200
+      if (response.status === 200) {
+        const result = response.data;
         setErrorMessage('');
         toast.success(result.message || 'Login successful!');
-        setTimeout(() => {
 
+        createCookie("username",username)
+        createCookie("authToken",result.token)
+
+        setTimeout(() => {
           window.location.href = "/";
         }, 1000);
+
       } else {
-        // Incorrect password or username doesn't exist
-        const result = await response.json();
-        setErrorMessage(result.message);
-        toast.error(result.message || 'Login failed');
+        // If the response status is not OK, handle the error
+        console.error('Server error:', response.status);
+        setErrorMessage('Login failed');
+        toast.error('Login failed');
       }
     } catch (error) {
       console.error('Error:', error);
+      setErrorMessage('Login failed');
+      toast.error('Login failed');
     }
   };
   
+  
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <>
@@ -56,13 +71,21 @@ const Login = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <Input
-          type="password"
-          placeholder="Password"
-          mb={4}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            mb={4}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <InputRightElement width="4.5rem">
+            <Button h="1.75rem" bgColor='white' size="sm" onClick={handleTogglePasswordVisibility}>
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
         <Button colorScheme="teal" onClick={handleLogin}>
           Login
         </Button>
