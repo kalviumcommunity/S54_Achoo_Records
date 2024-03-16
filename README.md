@@ -2,7 +2,7 @@
 
 **Render Link** : https://achoo-records.onrender.com
 
-**deployes link** : https://achoo.vercel.app/
+**Vercel link** : https://achoo.vercel.app/
 
 ## Project Overview :
 
